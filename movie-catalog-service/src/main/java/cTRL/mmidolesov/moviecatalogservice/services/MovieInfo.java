@@ -25,11 +25,11 @@ public class MovieInfo {
         Movie movie = restTemplate.getForObject("http://movie-info-service:8082/movies/" +
                 rating.getMovieId(), Movie.class);
 
-        return new CatalogItem(movie.getName(), "Test desc", rating.getRating());
+        return new CatalogItem(movie.getName(), movie.getDescription(), rating.getRating());
     }
 
-    public List<CatalogItem> getFallbackCatalogItem(Rating rating){
-        return Arrays.asList(new CatalogItem("No movie", "", rating.getRating()));
+    public CatalogItem getFallbackCatalogItem(Rating rating){
+        return new CatalogItem("Movie name not found", "", rating.getRating());
     }
 
 }
