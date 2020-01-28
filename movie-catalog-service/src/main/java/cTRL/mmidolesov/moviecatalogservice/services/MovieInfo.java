@@ -20,7 +20,7 @@ public class MovieInfo {
     @Autowired
     RestTemplate restTemplate;
 
-    @HystrixCommand(fallbackMethod = "getFallbackCatalog")
+    @HystrixCommand(fallbackMethod = "getFallbackCatalogItem")
     public CatalogItem getCatalogItem(Rating rating) {
         Movie movie = restTemplate.getForObject("http://movie-info-service:8082/movies/" +
                 rating.getMovieId(), Movie.class);
@@ -28,8 +28,8 @@ public class MovieInfo {
         return new CatalogItem(movie.getName(), "Test desc", rating.getRating());
     }
 
-    public List<CatalogItem> getFallbackCatalog(@PathVariable("userId") final String userId){
-        return Arrays.asList(new CatalogItem("No movie", "", 0));
+    public List<CatalogItem> getFallbackCatalogItem(Rating rating){
+        return Arrays.asList(new CatalogItem("No movie", "", rating.getRating()));
     }
 
 }
